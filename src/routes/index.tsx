@@ -20,6 +20,9 @@ export const Route = createFileRoute("/")({
       { title: "Tally Junk Removal — Tallahassee's #1 Junk Haulers" },
       { name: "description", content: "Same-day furniture, appliance, yard debris & construction removal in Tallahassee, FL. Call 850-966-1371." },
     ],
+    links: [
+      { rel: "preload", as: "image", href: heroBg, fetchpriority: "high" } as { rel: string; as: string; href: string; fetchpriority: string },
+    ],
   }),
 });
 
@@ -39,14 +42,6 @@ function Home() {
 
   return (
     <>
-      {/* Same-day banner */}
-      <div className="bg-[#f0b429] text-black overflow-hidden border-y border-black/20">
-        <div className="py-2 whitespace-nowrap font-[var(--font-heading)] uppercase tracking-widest text-sm animate-[marquee_25s_linear_infinite]">
-          ✓ Same-day slots still available today &nbsp;·&nbsp; Call {SITE.phone} &nbsp;·&nbsp; ✓ Licensed & Insured &nbsp;·&nbsp; ✓ Tallahassee Local &nbsp;·&nbsp; ✓ Same-day slots still available today &nbsp;·&nbsp; Call {SITE.phone} &nbsp;·&nbsp;
-        </div>
-        <style>{`@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }`}</style>
-      </div>
-
       {/* HERO */}
       <section ref={heroRef} className="relative min-h-[88vh] flex items-center overflow-hidden bg-black">
         <img
@@ -55,10 +50,13 @@ function Home() {
           aria-hidden
           width={1920}
           height={1080}
-          className="hero-bg absolute inset-0 w-full h-full object-cover opacity-60"
+          fetchPriority="high"
+          decoding="async"
+          className="hero-bg absolute inset-0 w-full h-full object-cover opacity-50 sm:opacity-60"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40" />
+        {/* Readability overlays — stronger on small screens */}
+        <div className="absolute inset-0 bg-black/60 sm:bg-gradient-to-r sm:from-black sm:via-black/80 sm:to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 sm:via-transparent to-black/40" />
         <CustomCursor containerRef={heroRef} />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 w-full">
@@ -66,14 +64,14 @@ function Home() {
             <p className="hero-overline font-[var(--font-heading)] uppercase tracking-[0.3em] text-[#f0b429] text-xs md:text-sm mb-5">
               <ScrambleText text="TALLAHASSEE'S #1 JUNK REMOVAL" duration={900} delay={150} />
             </p>
-            <h1 className="font-[var(--font-display)] text-white leading-[0.9] tracking-wide gold-text-glow" style={{ fontSize: "clamp(3.75rem, 11vw, 9rem)" }}>
+            <h1 className="font-[var(--font-display)] text-white leading-[0.9] tracking-wide gold-text-glow drop-shadow-[0_4px_20px_rgba(0,0,0,0.85)]" style={{ fontSize: "clamp(3rem, 10vw, 9rem)" }}>
               <ScrambleText as="span" text="WE HAUL." duration={700} delay={300} className="hero-title block" />
               <ScrambleText as="span" text="YOU CALL." duration={900} delay={650} className="hero-title block text-[#f0b429]" />
             </h1>
-            <p className="hero-sub text-[#e8e4d8] text-base md:text-lg mt-6">
+            <p className="hero-sub text-white text-base md:text-lg mt-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
               Furniture · Appliances · Yard Debris · Construction Materials
             </p>
-            <div className="hero-badges flex flex-wrap gap-x-4 gap-y-2 mt-5 text-sm text-[#e8e4d8]">
+            <div className="hero-badges flex flex-wrap gap-x-4 gap-y-2 mt-5 text-sm text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
               {["Same-Day Available", "Licensed & Insured", "Tallahassee Local"].map((b, i) => (
                 <span key={b} className="flex items-center gap-1.5">
                   {i > 0 && <span className="text-[#f0b429] mr-3">·</span>}
@@ -92,6 +90,14 @@ function Home() {
           </div>
         </div>
       </section>
+
+      {/* Same-day banner — moved below hero */}
+      <div className="bg-[#f0b429] text-black overflow-hidden border-y border-black/20">
+        <div className="py-2 whitespace-nowrap font-[var(--font-heading)] uppercase tracking-widest text-sm animate-[marquee_25s_linear_infinite]">
+          ✓ Same-day slots still available today &nbsp;·&nbsp; Call {SITE.phone} &nbsp;·&nbsp; ✓ Licensed & Insured &nbsp;·&nbsp; ✓ Tallahassee Local &nbsp;·&nbsp; ✓ Same-day slots still available today &nbsp;·&nbsp; Call {SITE.phone} &nbsp;·&nbsp;
+        </div>
+        <style>{`@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }`}</style>
+      </div>
 
       <Stats />
 
