@@ -1,17 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, lazy, Suspense } from "react";
 import { gsap } from "gsap";
 import { Phone, Check } from "lucide-react";
 import { SITE, SERVICES } from "@/lib/site";
 import { Stats } from "@/components/Stats";
-import { Testimonials } from "@/components/Testimonials";
-import { LoadEstimator } from "@/components/LoadEstimator";
-import { FAQ } from "@/components/FAQ";
 import { ScrambleText } from "@/components/ScrambleText";
 import { CustomCursor } from "@/components/CustomCursor";
 import heroBg from "@/assets/hero-bg.jpg";
 import gallery1 from "@/assets/gallery-1.jpg";
 import gallery3 from "@/assets/gallery-3.jpg";
+
+const Testimonials = lazy(() => import("@/components/Testimonials").then(m => ({ default: m.Testimonials })));
+const LoadEstimator = lazy(() => import("@/components/LoadEstimator").then(m => ({ default: m.LoadEstimator })));
+const FAQ = lazy(() => import("@/components/FAQ").then(m => ({ default: m.FAQ })));
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -146,7 +147,9 @@ function Home() {
         <div className="text-center mb-10">
           <h2 className="font-[var(--font-display)] text-5xl text-white tracking-wider">Get an Instant Estimate</h2>
         </div>
-        <LoadEstimator />
+        <Suspense fallback={null}>
+          <LoadEstimator />
+        </Suspense>
       </section>
 
       {/* GALLERY TEASER */}
@@ -166,14 +169,18 @@ function Home() {
         </div>
       </section>
 
-      <Testimonials />
+      <Suspense fallback={null}>
+        <Testimonials />
+      </Suspense>
 
       {/* FAQ */}
       <section className="py-20 px-4 bg-[#111108] honeycomb-bg">
         <div className="text-center mb-10">
           <h2 className="font-[var(--font-display)] text-5xl text-white tracking-wider">Frequently Asked</h2>
         </div>
-        <FAQ />
+        <Suspense fallback={null}>
+          <FAQ />
+        </Suspense>
       </section>
 
       {/* FACEBOOK SOCIAL */}
