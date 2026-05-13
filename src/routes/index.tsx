@@ -22,7 +22,7 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Same-day furniture, appliance, yard debris & construction removal in Tallahassee, FL. Call 850-966-1371." },
     ],
     links: [
-      { rel: "preload", as: "image", href: heroBg, fetchpriority: "high" } as { rel: string; as: string; href: string; fetchpriority: string },
+      { rel: "preload", as: "image", href: heroBg, fetchPriority: "high" } as { rel: string; as: string; href: string; fetchPriority: string },
     ],
   }),
 });
