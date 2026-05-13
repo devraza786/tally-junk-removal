@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { prefersReducedMotion } from "@/hooks/useReducedMotion";
 
 /** Gold hexagon cursor that activates only inside the given container ref. */
-export function CustomCursor({ containerRef }: { containerRef: React.RefObject<HTMLElement> }) {
+export function CustomCursor({ containerRef }: { containerRef: React.RefObject<HTMLElement | null> }) {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
 
