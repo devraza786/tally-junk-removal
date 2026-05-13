@@ -40,6 +40,27 @@ function Gallery() {
   const prev = useCallback(() => setIndex(i => (i === null ? null : (i - 1 + PHOTOS.length) % PHOTOS.length)), []);
   const next = useCallback(() => setIndex(i => (i === null ? null : (i + 1) % PHOTOS.length)), []);
 
+  // Warm the browser cache so the lightbox opens instantly
+  useEffect(() => {
+    const imgs = PHOTOS.map(src => {
+      const img = new Image();
+      img.decoding = "async";
+      img.src = src;
+      return img;
+    });
+    return () => { imgs.length = 0; };
+  }, []);
+
+  // Aggressively prefetch neighbors of the current index
+  useEffect(() => {
+    if (index === null) return;
+    [-1, 1, 2].forEach(o => {
+      const n = (index + o + PHOTOS.length) % PHOTOS.length;
+      const img = new Image();
+      img.src = PHOTOS[n];
+    });
+  }, [index]);
+
   useEffect(() => {
     if (index === null) return;
     const onKey = (e: KeyboardEvent) => {
