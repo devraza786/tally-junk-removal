@@ -1,14 +1,12 @@
 import { useEffect, useRef } from "react";
 import { prefersReducedMotion } from "@/hooks/useReducedMotion";
 
-/** Gold hexagon cursor that activates only inside the given container ref. */
-export function CustomCursor({ containerRef }: { containerRef: React.RefObject<HTMLElement | null> }) {
+/** Gold hexagon cursor that tracks across the entire website. */
+export function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
     if (prefersReducedMotion()) return;
     // Touch devices: skip
     if (window.matchMedia("(hover: none)").matches) return;
@@ -16,15 +14,14 @@ export function CustomCursor({ containerRef }: { containerRef: React.RefObject<H
     const dot = dotRef.current!;
     const ring = ringRef.current!;
     let x = 0, y = 0, rx = 0, ry = 0;
-    let active = false;
     let raf = 0;
 
     const onMove = (e: MouseEvent) => {
       x = e.clientX; y = e.clientY;
       dot.style.transform = `translate3d(${x - 4}px, ${y - 4}px, 0)`;
+      ring.style.opacity = "1";
     };
-    const onEnter = () => { active = true; el.style.cursor = "none"; ring.style.opacity = "1"; };
-    const onLeave = () => { active = false; el.style.cursor = ""; ring.style.opacity = "0"; };
+    const onLeave = () => { ring.style.opacity = "0"; };
     const onDown = () => ring.classList.add("cursor-down");
     const onUp = () => ring.classList.remove("cursor-down");
 
@@ -35,23 +32,20 @@ export function CustomCursor({ containerRef }: { containerRef: React.RefObject<H
       raf = requestAnimationFrame(loop);
     };
 
-    el.addEventListener("mousemove", onMove);
-    el.addEventListener("mouseenter", onEnter);
-    el.addEventListener("mouseleave", onLeave);
-    el.addEventListener("mousedown", onDown);
-    el.addEventListener("mouseup", onUp);
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseleave", onLeave);
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("mouseup", onUp);
     raf = requestAnimationFrame(loop);
 
     return () => {
-      el.removeEventListener("mousemove", onMove);
-      el.removeEventListener("mouseenter", onEnter);
-      el.removeEventListener("mouseleave", onLeave);
-      el.removeEventListener("mousedown", onDown);
-      el.removeEventListener("mouseup", onUp);
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseleave", onLeave);
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("mouseup", onUp);
       cancelAnimationFrame(raf);
-      el.style.cursor = "";
     };
-  }, [containerRef]);
+  }, []);
 
   return (
     <>

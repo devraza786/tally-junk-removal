@@ -16,6 +16,7 @@ import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { StickyCtas, CookieBanner } from "@/components/StickyCtas";
 import { Loader } from "@/components/Loader";
+import { CustomCursor } from "@/components/CustomCursor";
 import { SITE } from "@/lib/site";
 
 if (typeof window !== "undefined") {
@@ -66,6 +67,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "stylesheet", href: appCss },
       { rel: "icon", type: "image/png", href: "/favicon.png" },
       { rel: "apple-touch-icon", href: "/favicon.png" },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" },
     ],
     scripts: [
       {
@@ -115,6 +119,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <CustomCursor />
       {!loaded && isHome && <Loader onDone={() => setLoaded(true)} />}
       <Nav />
       <main className="min-h-screen pt-16 sm:pt-20 honeycomb-bg">

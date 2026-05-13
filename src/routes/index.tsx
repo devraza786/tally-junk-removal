@@ -1,17 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, lazy, Suspense } from "react";
 import { gsap } from "gsap";
 import { Phone, Check } from "lucide-react";
 import { SITE, SERVICES } from "@/lib/site";
 import { Stats } from "@/components/Stats";
-import { Testimonials } from "@/components/Testimonials";
-import { LoadEstimator } from "@/components/LoadEstimator";
-import { FAQ } from "@/components/FAQ";
 import { ScrambleText } from "@/components/ScrambleText";
-import { CustomCursor } from "@/components/CustomCursor";
 import heroBg from "@/assets/hero-bg.jpg";
 import gallery1 from "@/assets/gallery-1.jpg";
 import gallery3 from "@/assets/gallery-3.jpg";
+
+const Testimonials = lazy(() => import("@/components/Testimonials").then(m => ({ default: m.Testimonials })));
+const LoadEstimator = lazy(() => import("@/components/LoadEstimator").then(m => ({ default: m.LoadEstimator })));
+const FAQ = lazy(() => import("@/components/FAQ").then(m => ({ default: m.FAQ })));
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Same-day furniture, appliance, yard debris & construction removal in Tallahassee, FL. Call 850-966-1371." },
     ],
     links: [
-      { rel: "preload", as: "image", href: heroBg, fetchpriority: "high" } as { rel: string; as: string; href: string; fetchpriority: string },
+      { rel: "preload", as: "image", href: heroBg, fetchPriority: "high" } as { rel: string; as: string; href: string; fetchPriority: string },
     ],
   }),
 });
@@ -52,12 +52,11 @@ function Home() {
           height={1080}
           fetchPriority="high"
           decoding="async"
-          className="hero-bg absolute inset-0 w-full h-full object-cover opacity-50 sm:opacity-60"
+          className="hero-bg absolute inset-0 w-full h-full object-cover opacity-75 sm:opacity-85"
         />
         {/* Readability overlays — stronger on small screens */}
         <div className="absolute inset-0 bg-black/60 sm:bg-gradient-to-r sm:from-black sm:via-black/80 sm:to-black/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 sm:via-transparent to-black/40" />
-        <CustomCursor containerRef={heroRef} />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 w-full">
           <div className="max-w-3xl">
@@ -146,7 +145,9 @@ function Home() {
         <div className="text-center mb-10">
           <h2 className="font-[var(--font-display)] text-5xl text-white tracking-wider">Get an Instant Estimate</h2>
         </div>
-        <LoadEstimator />
+        <Suspense fallback={null}>
+          <LoadEstimator />
+        </Suspense>
       </section>
 
       {/* GALLERY TEASER */}
@@ -166,14 +167,18 @@ function Home() {
         </div>
       </section>
 
-      <Testimonials />
+      <Suspense fallback={null}>
+        <Testimonials />
+      </Suspense>
 
       {/* FAQ */}
       <section className="py-20 px-4 bg-[#111108] honeycomb-bg">
         <div className="text-center mb-10">
           <h2 className="font-[var(--font-display)] text-5xl text-white tracking-wider">Frequently Asked</h2>
         </div>
-        <FAQ />
+        <Suspense fallback={null}>
+          <FAQ />
+        </Suspense>
       </section>
 
       {/* FACEBOOK SOCIAL */}
