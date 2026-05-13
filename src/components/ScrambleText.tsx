@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ElementType } from "react";
 import { prefersReducedMotion } from "@/hooks/useReducedMotion";
 
 const CHARS = "!<>-_\\/[]{}—=+*^?#TJABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -16,7 +16,7 @@ export function ScrambleText({
   duration?: number;
   trigger?: boolean;
   delay?: number;
-  as?: keyof JSX.IntrinsicElements;
+  as?: ElementType;
 }) {
   const [out, setOut] = useState(text);
   const raf = useRef<number | null>(null);
