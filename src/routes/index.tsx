@@ -2,17 +2,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { Phone, Check } from "lucide-react";
-import logo from "@/assets/tally-logo.png";
 import { SITE, SERVICES } from "@/lib/site";
 import { Stats } from "@/components/Stats";
 import { Testimonials } from "@/components/Testimonials";
 import { LoadEstimator } from "@/components/LoadEstimator";
-import { BeforeAfter } from "@/components/BeforeAfter";
 import { FAQ } from "@/components/FAQ";
+import { ScrambleText } from "@/components/ScrambleText";
+import { CustomCursor } from "@/components/CustomCursor";
+import heroBg from "@/assets/hero-bg.jpg";
 import gallery1 from "@/assets/gallery-1.jpg";
-import gallery2 from "@/assets/gallery-2.jpg";
 import gallery3 from "@/assets/gallery-3.jpg";
-import gallery4 from "@/assets/gallery-4.jpg";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -33,7 +32,7 @@ function Home() {
       gsap.from(".hero-overline", { y: 20, opacity: 0, duration: 0.6, delay: 0.2 });
       gsap.from(".hero-title", { y: 60, opacity: 0, duration: 0.9, ease: "power3.out", delay: 0.3, stagger: 0.1 });
       gsap.from(".hero-sub, .hero-badges, .hero-cta", { y: 30, opacity: 0, duration: 0.6, delay: 0.9, stagger: 0.1 });
-      gsap.to(".hero-logo", { rotation: 360, duration: 60, repeat: -1, ease: "none" });
+      gsap.to(".hero-bg", { scale: 1.08, duration: 18, repeat: -1, yoyo: true, ease: "sine.inOut" });
     }, heroRef);
     return () => ctx.revert();
   }, []);
@@ -49,16 +48,27 @@ function Home() {
       </div>
 
       {/* HERO */}
-      <section ref={heroRef} className="relative min-h-[85vh] flex items-center honeycomb-bg overflow-hidden"
-        style={{ background: "radial-gradient(ellipse at top, rgba(240,180,41,0.08), transparent 60%), #000" }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 grid lg:grid-cols-2 gap-10 items-center w-full">
-          <div>
-            <p className="hero-overline font-[var(--font-heading)] uppercase tracking-[0.25em] text-[#f0b429] text-xs md:text-sm mb-4">
-              Tallahassee's #1 Junk Removal
+      <section ref={heroRef} className="relative min-h-[88vh] flex items-center overflow-hidden bg-black">
+        <img
+          src={heroBg}
+          alt=""
+          aria-hidden
+          width={1920}
+          height={1080}
+          className="hero-bg absolute inset-0 w-full h-full object-cover opacity-60"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40" />
+        <CustomCursor containerRef={heroRef} />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 w-full">
+          <div className="max-w-3xl">
+            <p className="hero-overline font-[var(--font-heading)] uppercase tracking-[0.3em] text-[#f0b429] text-xs md:text-sm mb-5">
+              <ScrambleText text="TALLAHASSEE'S #1 JUNK REMOVAL" duration={900} delay={150} />
             </p>
-            <h1 className="font-[var(--font-display)] text-white leading-[0.9] tracking-wide" style={{ fontSize: "clamp(3.5rem, 9vw, 7.5rem)" }}>
-              <span className="hero-title block">WE HAUL.</span>
-              <span className="hero-title block text-[#f0b429]">YOU CALL.</span>
+            <h1 className="font-[var(--font-display)] text-white leading-[0.9] tracking-wide gold-text-glow" style={{ fontSize: "clamp(3.75rem, 11vw, 9rem)" }}>
+              <ScrambleText as="span" text="WE HAUL." duration={700} delay={300} className="hero-title block" />
+              <ScrambleText as="span" text="YOU CALL." duration={900} delay={650} className="hero-title block text-[#f0b429]" />
             </h1>
             <p className="hero-sub text-[#e8e4d8] text-base md:text-lg mt-6">
               Furniture · Appliances · Yard Debris · Construction Materials
@@ -79,9 +89,6 @@ function Home() {
                 <Phone size={18} /> CALL {SITE.phone}
               </a>
             </div>
-          </div>
-          <div className="flex justify-center lg:justify-end">
-            <img src={logo} alt="Tally Junk Removal logo" className="hero-logo w-72 md:w-96 lg:w-[460px] object-contain drop-shadow-[0_0_60px_rgba(240,180,41,0.3)]" />
           </div>
         </div>
       </section>
@@ -136,7 +143,7 @@ function Home() {
         <LoadEstimator />
       </section>
 
-      {/* GALLERY TEASER + BEFORE/AFTER */}
+      {/* GALLERY TEASER */}
       <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-10">
