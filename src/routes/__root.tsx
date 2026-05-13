@@ -16,6 +16,7 @@ import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { StickyCtas, CookieBanner } from "@/components/StickyCtas";
 import { Loader } from "@/components/Loader";
+import { CustomCursor } from "@/components/CustomCursor";
 import { SITE } from "@/lib/site";
 
 if (typeof window !== "undefined") {
@@ -118,6 +119,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <CustomCursor />
       {!loaded && isHome && <Loader onDone={() => setLoaded(true)} />}
       <Nav />
       <main className="min-h-screen pt-16 sm:pt-20 honeycomb-bg">

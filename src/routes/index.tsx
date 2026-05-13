@@ -5,7 +5,6 @@ import { Phone, Check } from "lucide-react";
 import { SITE, SERVICES } from "@/lib/site";
 import { Stats } from "@/components/Stats";
 import { ScrambleText } from "@/components/ScrambleText";
-import { CustomCursor } from "@/components/CustomCursor";
 import heroBg from "@/assets/hero-bg.jpg";
 import gallery1 from "@/assets/gallery-1.jpg";
 import gallery3 from "@/assets/gallery-3.jpg";
@@ -53,12 +52,11 @@ function Home() {
           height={1080}
           fetchPriority="high"
           decoding="async"
-          className="hero-bg absolute inset-0 w-full h-full object-cover opacity-50 sm:opacity-60"
+          className="hero-bg absolute inset-0 w-full h-full object-cover opacity-75 sm:opacity-85"
         />
         {/* Readability overlays — stronger on small screens */}
         <div className="absolute inset-0 bg-black/60 sm:bg-gradient-to-r sm:from-black sm:via-black/80 sm:to-black/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 sm:via-transparent to-black/40" />
-        <CustomCursor containerRef={heroRef} />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 w-full">
           <div className="max-w-3xl">
