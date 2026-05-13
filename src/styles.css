@@ -118,11 +118,19 @@
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Reduced motion */
+/* Reduced motion: disable all animations, transitions, transforms, smooth scroll */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
-    animation-duration: 0.01ms !important;
+    animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
   }
+  html { scroll-behavior: auto !important; }
+  .hero-bg, .hero-logo { transform: none !important; animation: none !important; }
+  .loader-wrap { display: none !important; }
+  /* Hide marquee + decorative loops */
+  [class*="animate-["] { animation: none !important; }
 }
