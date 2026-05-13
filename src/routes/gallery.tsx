@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { X } from "lucide-react";
-import { BeforeAfter } from "@/components/BeforeAfter";
+import { useState, useEffect, useCallback } from "react";
+import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import g1 from "@/assets/gallery-1.jpg";
 import g2 from "@/assets/gallery-2.jpg";
 import g3 from "@/assets/gallery-3.jpg";
@@ -11,6 +11,14 @@ import g6 from "@/assets/gallery-6.jpg";
 import g7 from "@/assets/gallery-7.jpg";
 import g8 from "@/assets/gallery-8.jpg";
 import g9 from "@/assets/gallery-9.jpg";
+import g10 from "@/assets/gallery-10.jpg";
+import g11 from "@/assets/gallery-11.jpg";
+import g12 from "@/assets/gallery-12.jpg";
+import g13 from "@/assets/gallery-13.jpg";
+import g14 from "@/assets/gallery-14.jpg";
+import g15 from "@/assets/gallery-15.jpg";
+import g16 from "@/assets/gallery-16.jpg";
+import g17 from "@/assets/gallery-17.jpg";
 import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/gallery")({
@@ -23,10 +31,30 @@ export const Route = createFileRoute("/gallery")({
   }),
 });
 
-const PHOTOS = [g1, g2, g3, g4, g5, g6, g7, g8, g9];
+const PHOTOS = [g10, g11, g12, g13, g14, g15, g16, g17, g1, g2, g3, g4, g5, g6, g7, g8, g9];
 
 function Gallery() {
-  const [open, setOpen] = useState<string | null>(null);
+  const [index, setIndex] = useState<number | null>(null);
+
+  const close = useCallback(() => setIndex(null), []);
+  const prev = useCallback(() => setIndex(i => (i === null ? null : (i - 1 + PHOTOS.length) % PHOTOS.length)), []);
+  const next = useCallback(() => setIndex(i => (i === null ? null : (i + 1) % PHOTOS.length)), []);
+
+  useEffect(() => {
+    if (index === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") close();
+      else if (e.key === "ArrowLeft") prev();
+      else if (e.key === "ArrowRight") next();
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [index, close, prev, next]);
+
   return (
     <>
       <section className="py-20 px-4 honeycomb-bg bg-black text-center">
@@ -34,33 +62,99 @@ function Gallery() {
         <h1 className="font-[var(--font-display)] text-6xl md:text-8xl text-white tracking-wider">Gallery</h1>
         <div className="h-0.5 w-32 bg-[#f0b429] mx-auto mt-4" />
         <p className="text-[#e8e4d8]/70 mt-6 text-sm max-w-2xl mx-auto">
-          Replace these with the latest photos from our <a href={SITE.facebook} target="_blank" rel="noreferrer" className="text-[#f0b429] underline">Facebook page</a>.
+          Fresh before-and-afters from real Tallahassee hauls. See more on our{" "}
+          <a href={SITE.facebook} target="_blank" rel="noreferrer" className="text-[#f0b429] underline">Facebook page</a>.
         </p>
       </section>
 
       <section className="py-12 px-4">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="font-[var(--font-display)] text-3xl md:text-4xl text-white tracking-wider text-center mb-6">Drag to Reveal</h2>
-          <BeforeAfter before={g1} after={g3} alt="Yard cleanup" />
-        </div>
-      </section>
-
-      <section className="py-12 px-4">
-        <div className="max-w-7xl mx-auto columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {PHOTOS.map((p, i) => (
-            <button key={i} onClick={() => setOpen(p)} className="block w-full break-inside-avoid group relative">
-              <img src={p} alt={`Tally job ${i + 1}`} loading="lazy" className="w-full rounded-lg border-2 border-transparent group-hover:border-[#f0b429] group-hover:shadow-[0_0_24px_rgba(240,180,41,0.4)] transition-all" />
+            <button
+              key={i}
+              onClick={() => setIndex(i)}
+              className="group relative aspect-square overflow-hidden rounded-lg border-2 border-[#f0b429]/20 hover:border-[#f0b429] transition-all hover:shadow-[0_0_28px_rgba(240,180,41,0.45)] focus:outline-none focus:ring-2 focus:ring-[#f0b429]"
+              aria-label={`Open photo ${i + 1}`}
+            >
+              <img src={p} alt={`Tally job ${i + 1}`} loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-between p-3">
+                <span className="font-[var(--font-heading)] uppercase tracking-widest text-[#f0b429] text-xs">View</span>
+                <ZoomIn className="text-[#f0b429]" size={18} />
+              </div>
             </button>
           ))}
         </div>
       </section>
 
-      {open && (
-        <div className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4" onClick={() => setOpen(null)}>
-          <button className="absolute top-6 right-6 text-[#f0b429]"><X size={32} /></button>
-          <img src={open} alt="" className="max-w-full max-h-full rounded border-2 border-[#f0b429]" />
-        </div>
-      )}
+      <AnimatePresence>
+        {index !== null && (
+          <motion.div
+            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex items-center justify-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={close}
+          >
+            {/* Top bar */}
+            <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-6 py-4 text-[#f0b429] font-[var(--font-heading)] uppercase tracking-widest text-sm">
+              <span>{index + 1} / {PHOTOS.length}</span>
+              <button onClick={(e) => { e.stopPropagation(); close(); }} aria-label="Close" className="hover:text-[#ffd166] p-2">
+                <X size={28} />
+              </button>
+            </div>
+
+            {/* Prev */}
+            <button
+              onClick={(e) => { e.stopPropagation(); prev(); }}
+              aria-label="Previous"
+              className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 bg-black/60 border border-[#f0b429]/60 text-[#f0b429] hover:bg-[#f0b429] hover:text-black transition-all flex items-center justify-center"
+              style={{ clipPath: "polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%)" }}
+            >
+              <ChevronLeft size={28} />
+            </button>
+
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={index}
+                src={PHOTOS[index]}
+                alt={`Photo ${index + 1}`}
+                onClick={(e) => e.stopPropagation()}
+                className="max-w-[90vw] max-h-[82vh] object-contain rounded border-2 border-[#f0b429] shadow-[0_0_60px_rgba(240,180,41,0.25)]"
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.96 }}
+                transition={{ duration: 0.2 }}
+              />
+            </AnimatePresence>
+
+            {/* Next */}
+            <button
+              onClick={(e) => { e.stopPropagation(); next(); }}
+              aria-label="Next"
+              className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 bg-black/60 border border-[#f0b429]/60 text-[#f0b429] hover:bg-[#f0b429] hover:text-black transition-all flex items-center justify-center"
+              style={{ clipPath: "polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%)" }}
+            >
+              <ChevronRight size={28} />
+            </button>
+
+            {/* Thumbnail strip */}
+            <div className="absolute bottom-3 left-0 right-0 flex justify-center px-4">
+              <div className="flex gap-2 overflow-x-auto no-scrollbar max-w-full bg-black/60 border border-[#f0b429]/30 rounded p-2">
+                {PHOTOS.map((p, i) => (
+                  <button
+                    key={i}
+                    onClick={(e) => { e.stopPropagation(); setIndex(i); }}
+                    className={`flex-none w-14 h-14 rounded overflow-hidden border-2 transition-all ${i === index ? "border-[#f0b429] scale-105" : "border-transparent opacity-60 hover:opacity-100"}`}
+                  >
+                    <img src={p} alt="" className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

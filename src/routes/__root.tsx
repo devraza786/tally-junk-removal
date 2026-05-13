@@ -9,6 +9,7 @@ import {
 import { useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { AnimatePresence, motion } from "framer-motion";
 
 import appCss from "../styles.css?url";
 import { Nav } from "@/components/Nav";
@@ -117,7 +118,17 @@ function RootComponent() {
       {!loaded && isHome && <Loader onDone={() => setLoaded(true)} />}
       <Nav />
       <main className="min-h-screen pt-16 sm:pt-20 honeycomb-bg">
-        <Outlet />
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={router.state.location.pathname}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <Outlet />
+          </motion.div>
+        </AnimatePresence>
       </main>
       <Footer />
       <StickyCtas />
