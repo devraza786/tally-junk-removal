@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "@tanstack/react-router";
 import { MessageCircle } from "lucide-react";
 import { SITE } from "@/lib/site";
 
@@ -17,13 +16,13 @@ export function StickyCtas() {
         <MessageCircle size={26} />
       </a>
       {/* Book Now hexagon bottom-right (desktop) */}
-      <Link
-        to="/contact"
+      <a
+        href="/contact"
         className="hidden md:flex fixed bottom-6 right-6 z-40 w-20 h-20 items-center justify-center bg-[#f0b429] text-black font-[var(--font-display)] text-sm tracking-wider hover:scale-110 transition-transform shadow-lg shadow-[#f0b429]/50"
         style={{ clipPath: "polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%)" }}
       >
         BOOK<br />NOW
-      </Link>
+      </a>
       {/* Mobile sticky call bar */}
       <a
         href={SITE.phoneTel}
@@ -47,7 +46,7 @@ export function CookieBanner() {
     <div className="fixed bottom-20 md:bottom-28 left-4 right-4 md:left-auto md:right-6 md:max-w-md z-50 bg-[#0d0d0d] border-2 border-[#f0b429] p-4 rounded-md shadow-xl">
       <p className="text-sm text-[#e8e4d8] mb-3">
         We use cookies to make Tally Junk Removal work better for you. Read our{" "}
-        <Link to="/privacy" className="text-[#f0b429] underline">Privacy Policy</Link>.
+        <a href="/privacy" className="text-[#f0b429] underline">Privacy Policy</a>.
       </p>
       <button
         onClick={() => { localStorage.setItem("tally-cookie-ok", "1"); setShow(false); }}

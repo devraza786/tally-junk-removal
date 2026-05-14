@@ -1,16 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { Zap, DollarSign, Shield, Leaf, Check, X } from "lucide-react";
 import logo from "@/assets/tally-logo.png";
-
-export const Route = createFileRoute("/about")({
-  component: About,
-  head: () => ({
-    meta: [
-      { title: "About — Tally Junk Removal | Tallahassee's Trusted Crew" },
-      { name: "description", content: "Tally Junk Removal is Tallahassee's most trusted local haul crew. Same-day, honest pricing, licensed & insured." },
-    ],
-  }),
-});
 
 const PILLARS = [
   { icon: Zap, t: "Fast & Same-Day Available" },
@@ -19,7 +8,7 @@ const PILLARS = [
   { icon: Leaf, t: "Eco-Responsible Disposal" },
 ];
 
-function About() {
+export default function About() {
   return (
     <>
       <section className="py-20 px-4 honeycomb-bg bg-black">

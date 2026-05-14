@@ -1,11 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
-
-export const Route = createFileRoute("/privacy")({
-  component: Privacy,
-  head: () => ({ meta: [{ title: "Privacy Policy — Tally Junk Removal" }] }),
-});
-
-function Privacy() {
+export default function Privacy() {
   return (
     <section className="py-20 px-4 max-w-3xl mx-auto">
       <h1 className="font-[var(--font-display)] text-5xl text-white tracking-wider mb-6">Privacy Policy</h1>

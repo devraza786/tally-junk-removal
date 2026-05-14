@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { Sofa, Refrigerator, Trees, HardHat } from "lucide-react";
 import { SERVICES, SITE } from "@/lib/site";
 import { LoadEstimator } from "@/components/LoadEstimator";
@@ -8,17 +7,7 @@ const ICONS: Record<string, React.ComponentType<{ size?: number; className?: str
   Sofa, Refrigerator, Trees, HardHat,
 };
 
-export const Route = createFileRoute("/services")({
-  component: ServicesPage,
-  head: () => ({
-    meta: [
-      { title: "Services — Tally Junk Removal | Tallahassee FL" },
-      { name: "description", content: "Furniture, appliance, yard debris, and construction material removal in Tallahassee, FL. Same-day available." },
-    ],
-  }),
-});
-
-function ServicesPage() {
+export default function ServicesPage() {
   return (
     <>
       <section className="py-20 px-4 honeycomb-bg bg-black text-center">
@@ -51,8 +40,8 @@ function ServicesPage() {
         <LoadEstimator />
       </section>
 
-      <section className="py-20 px-4">
-        <h2 className="font-[var(--font-display)] text-4xl md:text-5xl text-white tracking-wider text-center mb-10">FAQs</h2>
+      <section className="py-16 px-4">
+        <h2 className="font-[var(--font-display)] text-4xl md:text-5xl text-white tracking-wider text-center mb-10">Questions?</h2>
         <FAQ />
       </section>
     </>

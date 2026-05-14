@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router";
 import { Facebook, Phone, Mail, MapPin } from "lucide-react";
 import logo from "@/assets/tally-logo.png";
 import { SITE, SERVICES } from "@/lib/site";
@@ -15,12 +14,12 @@ export function Footer() {
         <div>
           <h3 className="font-[var(--font-display)] text-2xl text-white tracking-wider mb-4">Quick Links</h3>
           <ul className="space-y-2 text-[#e8e4d8]/80">
-            <li><Link to="/" className="hover:text-[#f0b429]">Home</Link></li>
-            <li><Link to="/services" className="hover:text-[#f0b429]">Services</Link></li>
-            <li><Link to="/gallery" className="hover:text-[#f0b429]">Gallery</Link></li>
-            <li><Link to="/about" className="hover:text-[#f0b429]">About</Link></li>
-            <li><Link to="/contact" className="hover:text-[#f0b429]">Contact</Link></li>
-            <li><Link to="/privacy" className="hover:text-[#f0b429]">Privacy Policy</Link></li>
+            <li><a href="/" className="hover:text-[#f0b429]">Home</a></li>
+            <li><a href="/services" className="hover:text-[#f0b429]">Services</a></li>
+            <li><a href="/gallery" className="hover:text-[#f0b429]">Gallery</a></li>
+            <li><a href="/about" className="hover:text-[#f0b429]">About</a></li>
+            <li><a href="/contact" className="hover:text-[#f0b429]">Contact</a></li>
+            <li><a href="/privacy" className="hover:text-[#f0b429]">Privacy Policy</a></li>
           </ul>
           <h4 className="font-[var(--font-heading)] uppercase text-sm tracking-widest text-[#f0b429] mt-6 mb-2">Service Areas</h4>
           <ul className="text-sm text-[#e8e4d8]/60 space-y-1">
