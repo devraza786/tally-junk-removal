@@ -1,26 +1,24 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Helmet } from "react-helmet";
 import { Sofa, Refrigerator, Trees, HardHat } from "lucide-react";
 import { SERVICES, SITE } from "@/lib/site";
 import { LoadEstimator } from "@/components/LoadEstimator";
 import { FAQ } from "@/components/FAQ";
 
 const ICONS: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
-  Sofa, Refrigerator, Trees, HardHat,
+  Sofa,
+  Refrigerator,
+  Trees,
+  HardHat,
 };
 
-export const Route = createFileRoute("/services")({
-  component: ServicesPage,
-  head: () => ({
-    meta: [
-      { title: "Services — Tally Junk Removal | Tallahassee FL" },
-      { name: "description", content: "Furniture, appliance, yard debris, and construction material removal in Tallahassee, FL. Same-day available." },
-    ],
-  }),
-});
-
-function ServicesPage() {
+export default function ServicesPage() {
   return (
     <>
+      <Helmet>
+        <title>Services — Tally Junk Removal | Tallahassee FL</title>
+        <meta name="description" content="Furniture, appliance, yard debris, and construction material removal in Tallahassee, FL. Same-day available." />
+      </Helmet>
+
       <section className="py-20 px-4 honeycomb-bg bg-black text-center">
         <p className="font-[var(--font-heading)] uppercase tracking-widest text-[#f0b429] text-sm mb-2">What We Take</p>
         <h1 className="font-[var(--font-display)] text-6xl md:text-8xl text-white tracking-wider">Our Services</h1>

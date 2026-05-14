@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { Phone, Check } from "lucide-react";
@@ -12,21 +12,10 @@ import { CustomCursor } from "@/components/CustomCursor";
 import heroBg from "@/assets/hero-bg.jpg";
 import gallery1 from "@/assets/gallery-1.jpg";
 import gallery3 from "@/assets/gallery-3.jpg";
+import { Helmet } from "react-helmet";
+import { SITE } from "@/lib/site";
 
-export const Route = createFileRoute("/")({
-  component: Home,
-  head: () => ({
-    meta: [
-      { title: "Tally Junk Removal — Tallahassee's #1 Junk Haulers" },
-      { name: "description", content: "Same-day furniture, appliance, yard debris & construction removal in Tallahassee, FL. Call 850-966-1371." },
-    ],
-    links: [
-      { rel: "preload", as: "image", href: heroBg, fetchpriority: "high" } as { rel: string; as: string; href: string; fetchpriority: string },
-    ],
-  }),
-});
-
-function Home() {
+export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -42,6 +31,36 @@ function Home() {
 
   return (
     <>
+      <Helmet>
+        <title>Tally Junk Removal — Tallahassee's #1 Junk Haulers</title>
+        <meta name="description" content="Same-day furniture, appliance, yard debris & construction removal in Tallahassee, FL. Call 850-966-1371." />
+        <link rel="preload" as="image" href={heroBg} fetchPriority="high" />
+        <meta property="og:title" content="Tally Junk Removal — Tallahassee's #1 Junk Haulers" />
+        <meta property="og:description" content="Same-day junk removal in Tallahassee, FL. Furniture, appliances, yard debris, construction." />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            name: SITE.name,
+            telephone: SITE.phone,
+            email: SITE.email,
+            image: "/favicon.png",
+            address: {
+              "@type": "PostalAddress",
+              addressLocality: "Tallahassee",
+              addressRegion: "FL",
+              postalCode: SITE.zip,
+              addressCountry: "US"
+            },
+            areaServed: "Tallahassee, FL",
+            url: "/",
+            priceRange: "$$"
+          })}
+        </script>
+      </Helmet>
+      
       {/* HERO */}
       <section ref={heroRef} className="relative min-h-[88vh] flex items-center overflow-hidden bg-black">
         <img
@@ -54,7 +73,6 @@ function Home() {
           decoding="async"
           className="hero-bg absolute inset-0 w-full h-full object-cover opacity-50 sm:opacity-60"
         />
-        {/* Readability overlays — stronger on small screens */}
         <div className="absolute inset-0 bg-black/60 sm:bg-gradient-to-r sm:from-black sm:via-black/80 sm:to-black/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 sm:via-transparent to-black/40" />
         <CustomCursor containerRef={heroRef} />
@@ -91,7 +109,6 @@ function Home() {
         </div>
       </section>
 
-      {/* Same-day banner — moved below hero */}
       <div className="bg-[#f0b429] text-black overflow-hidden border-y border-black/20">
         <div className="py-2 whitespace-nowrap font-[var(--font-heading)] uppercase tracking-widest text-sm animate-[marquee_25s_linear_infinite]">
           ✓ Same-day slots still available today &nbsp;·&nbsp; Call {SITE.phone} &nbsp;·&nbsp; ✓ Licensed & Insured &nbsp;·&nbsp; ✓ Tallahassee Local &nbsp;·&nbsp; ✓ Same-day slots still available today &nbsp;·&nbsp; Call {SITE.phone} &nbsp;·&nbsp;
@@ -101,7 +118,6 @@ function Home() {
 
       <Stats />
 
-      {/* HOW IT WORKS */}
       <section className="py-20 px-4 honeycomb-bg bg-[#111108]">
         <div className="max-w-6xl mx-auto text-center">
           <p className="font-[var(--font-heading)] uppercase tracking-widest text-[#f0b429] text-sm mb-2">How It Works</p>
@@ -122,7 +138,6 @@ function Home() {
         </div>
       </section>
 
-      {/* SERVICES TEASER */}
       <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
@@ -141,7 +156,6 @@ function Home() {
         </div>
       </section>
 
-      {/* ESTIMATOR */}
       <section className="py-20 px-4 bg-[#111108] honeycomb-bg">
         <div className="text-center mb-10">
           <h2 className="font-[var(--font-display)] text-5xl text-white tracking-wider">Get an Instant Estimate</h2>
@@ -149,7 +163,6 @@ function Home() {
         <LoadEstimator />
       </section>
 
-      {/* GALLERY TEASER */}
       <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-10">
@@ -168,7 +181,6 @@ function Home() {
 
       <Testimonials />
 
-      {/* FAQ */}
       <section className="py-20 px-4 bg-[#111108] honeycomb-bg">
         <div className="text-center mb-10">
           <h2 className="font-[var(--font-display)] text-5xl text-white tracking-wider">Frequently Asked</h2>
@@ -176,7 +188,6 @@ function Home() {
         <FAQ />
       </section>
 
-      {/* FACEBOOK SOCIAL */}
       <section className="py-16 px-4">
         <div className="max-w-3xl mx-auto bg-[#0d0d0d] border-2 border-[#f0b429] rounded-lg p-8 text-center">
           <h3 className="font-[var(--font-display)] text-3xl text-white tracking-wider mb-3">See Our Latest Jobs on Facebook</h3>
@@ -187,7 +198,6 @@ function Home() {
         </div>
       </section>
 
-      {/* CTA BANNER */}
       <section className="py-16 px-4 bg-[#f0b429] text-black text-center">
         <h2 className="font-[var(--font-display)] text-4xl md:text-6xl tracking-wider">Ready to Haul It?</h2>
         <p className="font-[var(--font-heading)] uppercase tracking-widest mt-2">Same-day service across Tallahassee</p>

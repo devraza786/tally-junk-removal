@@ -1,22 +1,17 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Helmet } from "react-helmet";
 import { useState } from "react";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { SITE, SERVICES } from "@/lib/site";
 
-export const Route = createFileRoute("/contact")({
-  component: Contact,
-  head: () => ({
-    meta: [
-      { title: "Contact — Tally Junk Removal | Get a Free Quote" },
-      { name: "description", content: "Get a free junk removal quote in Tallahassee, FL. Call 850-966-1371 or fill out our quick form." },
-    ],
-  }),
-});
-
-function Contact() {
+export default function Contact() {
   const [sent, setSent] = useState(false);
   return (
     <>
+      <Helmet>
+        <title>Contact — Tally Junk Removal | Get a Free Quote</title>
+        <meta name="description" content="Get a free junk removal quote in Tallahassee, FL. Call 850-966-1371 or fill out our quick form." />
+      </Helmet>
+
       <section className="py-20 px-4 honeycomb-bg bg-black text-center">
         <p className="font-[var(--font-heading)] uppercase tracking-widest text-[#f0b429] text-sm mb-2">Get In Touch</p>
         <h1 className="font-[var(--font-display)] text-6xl md:text-8xl text-white tracking-wider">Free Quote</h1>
