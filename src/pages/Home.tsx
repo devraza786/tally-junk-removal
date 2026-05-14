@@ -13,7 +13,6 @@ import heroBg from "@/assets/hero-bg.jpg";
 import gallery1 from "@/assets/gallery-1.jpg";
 import gallery3 from "@/assets/gallery-3.jpg";
 import { Helmet } from "react-helmet";
-import { SITE } from "@/lib/site";
 
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
