@@ -1,4 +1,4 @@
-import { Link, useLocation } from "@tanstack/react-router";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Menu, X, Phone } from "lucide-react";
 import logo from "@/assets/tally-logo.png";
@@ -26,6 +26,11 @@ export function Nav() {
 
   useEffect(() => { setOpen(false); }, [loc.pathname]);
 
+  const isActive = (path: string) => {
+    if (path === "/") return loc.pathname === "/";
+    return loc.pathname.startsWith(path);
+  };
+
   return (
     <header className={`fixed top-0 inset-x-0 z-50 transition-all ${scrolled ? "bg-[#0d0d0d]/95 backdrop-blur border-b-2 border-[#f0b429]" : "bg-transparent"}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
@@ -38,9 +43,7 @@ export function Nav() {
         <nav className="hidden lg:flex items-center gap-8">
           {links.map(l => (
             <Link key={l.to} to={l.to}
-              className="font-[var(--font-heading)] uppercase text-sm tracking-widest text-white/80 hover:text-[#f0b429] transition-colors relative"
-              activeProps={{ className: "text-[#f0b429]" }}
-              activeOptions={{ exact: l.to === "/" }}>
+              className={`font-[var(--font-heading)] uppercase text-sm tracking-widest transition-colors relative ${isActive(l.to) ? "text-[#f0b429]" : "text-white/80 hover:text-[#f0b429]"}`}>
               {l.label}
             </Link>
           ))}
@@ -62,9 +65,7 @@ export function Nav() {
           <nav className="flex-1 flex flex-col items-center justify-center gap-6">
             {links.map(l => (
               <Link key={l.to} to={l.to}
-                className="font-[var(--font-display)] text-4xl text-white hover:text-[#f0b429] tracking-wider"
-                activeProps={{ className: "text-[#f0b429]" }}
-                activeOptions={{ exact: l.to === "/" }}>
+                className={`font-[var(--font-display)] text-4xl tracking-wider transition-colors ${isActive(l.to) ? "text-[#f0b429]" : "text-white hover:text-[#f0b429]"}`}>
                 {l.label}
               </Link>
             ))}

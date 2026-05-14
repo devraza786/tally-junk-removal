@@ -1,15 +1,36 @@
-// @lovable.dev/vite-tanstack-config already includes the following — do NOT add them manually
-// or the app will break with duplicate plugins:
-//   - tanstackStart, viteReact, tailwindcss, tsConfigPaths, cloudflare (build-only),
-//     componentTagger (dev-only), VITE_* env injection, @ path alias, React/TanStack dedupe,
-//     error logger plugins, and sandbox detection (port/host/strictPort).
-// You can pass additional config via defineConfig({ vite: { ... } }) if needed.
-import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+import tsconfigPaths from "vite-tsconfig-paths";
 
-// Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
-// @cloudflare/vite-plugin builds from this — wrangler.jsonc main alone is insufficient.
 export default defineConfig({
-  tanstackStart: {
-    server: { entry: "server" },
+  plugins: [react(), tailwindcss(), tsconfigPaths()],
+  build: {
+    target: "ES2020",
+    minify: "terser",
+    reportCompressedSize: true,
+    outDir: "dist",
+    cssCodeSplit: true,
+    chunkSizeWarningLimit: 1000,
+    terserOptions: {
+      compress: {
+        drop_console: false,
+      },
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ["react", "react-dom"],
+          router: ["react-router-dom"],
+          query: ["@tanstack/react-query"],
+          ui: ["@radix-ui/react-accordion", "@radix-ui/react-dialog", "@radix-ui/react-popover", "@radix-ui/react-select"],
+          animations: ["gsap", "framer-motion"],
+          utils: ["clsx", "tailwind-merge", "zod"],
+        },
+      },
+    },
+  },
+  ssr: {
+    noExternal: ["@radix-ui/*"],
   },
 });

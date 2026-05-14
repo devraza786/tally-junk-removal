@@ -1,26 +1,27 @@
-import { createFileRoute, notFound, Link } from "@tanstack/react-router";
+import { Helmet } from "react-helmet";
+import { Link, useParams, Navigate } from "react-router-dom";
 import { AREAS, SERVICES, SITE } from "@/lib/site";
 
-export const Route = createFileRoute("/areas/$slug")({
-  component: AreaPage,
-  loader: ({ params }) => {
-    const area = AREAS.find(a => a.slug === params.slug);
-    if (!area) throw notFound();
-    return { area };
-  },
-  head: ({ loaderData }) => ({
-    meta: [
-      { title: `Junk Removal in ${loaderData?.area.name}, FL — Tally Junk Removal` },
-      { name: "description", content: `Same-day junk removal in ${loaderData?.area.name}, FL. Furniture, appliances, yard debris, construction. Call 850-966-1371.` },
-    ],
-  }),
-  notFoundComponent: () => <div className="py-20 text-center text-white">Area not found.</div>,
-});
+export default function AreasDetail() {
+  const { slug } = useParams<{ slug: string }>();
+  const area = AREAS.find(a => a.slug === slug);
 
-function AreaPage() {
-  const { area } = Route.useLoaderData();
+  if (!area) {
+    return (
+      <div className="py-20 text-center text-white">
+        <h1 className="font-[var(--font-display)] text-4xl mb-4">Area not found</h1>
+        <Link to="/services" className="text-[#f0b429] underline">Back to Services</Link>
+      </div>
+    );
+  }
+
   return (
     <>
+      <Helmet>
+        <title>Junk Removal in {area.name}, FL — Tally Junk Removal</title>
+        <meta name="description" content={`Same-day junk removal in ${area.name}, FL. Furniture, appliances, yard debris, construction. Call 850-966-1371.`} />
+      </Helmet>
+
       <section className="py-20 px-4 honeycomb-bg bg-black text-center">
         <p className="font-[var(--font-heading)] uppercase tracking-widest text-[#f0b429] text-sm mb-2">Local · Trusted · Fast</p>
         <h1 className="font-[var(--font-display)] text-5xl md:text-7xl text-white tracking-wider">
