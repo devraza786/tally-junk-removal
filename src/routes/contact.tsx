@@ -1,19 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { SITE, SERVICES } from "@/lib/site";
 
-export const Route = createFileRoute("/contact")({
-  component: Contact,
-  head: () => ({
-    meta: [
-      { title: "Contact — Tally Junk Removal | Get a Free Quote" },
-      { name: "description", content: "Get a free junk removal quote in Tallahassee, FL. Call 850-966-1371 or fill out our quick form." },
-    ],
-  }),
-});
-
-function Contact() {
+export default function Contact() {
   const [sent, setSent] = useState(false);
   return (
     <>

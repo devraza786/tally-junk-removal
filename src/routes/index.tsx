@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { useEffect, useRef, lazy, Suspense } from "react";
 import { gsap } from "gsap";
 import { Phone, Check } from "lucide-react";
@@ -13,20 +13,7 @@ const Testimonials = lazy(() => import("@/components/Testimonials").then(m => ({
 const LoadEstimator = lazy(() => import("@/components/LoadEstimator").then(m => ({ default: m.LoadEstimator })));
 const FAQ = lazy(() => import("@/components/FAQ").then(m => ({ default: m.FAQ })));
 
-export const Route = createFileRoute("/")({
-  component: Home,
-  head: () => ({
-    meta: [
-      { title: "Tally Junk Removal — Tallahassee's #1 Junk Haulers" },
-      { name: "description", content: "Same-day furniture, appliance, yard debris & construction removal in Tallahassee, FL. Call 850-966-1371." },
-    ],
-    links: [
-      { rel: "preload", as: "image", href: heroBg, fetchPriority: "high" } as { rel: string; as: string; href: string; fetchPriority: string },
-    ],
-  }),
-});
-
-function Home() {
+export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -79,9 +66,9 @@ function Home() {
               ))}
             </div>
             <div className="hero-cta flex flex-wrap gap-3 mt-8">
-              <Link to="/contact" className="bg-[#f0b429] text-black font-[var(--font-display)] text-xl px-7 py-3 rounded tracking-wider hover:bg-[#ffd166] transition-all hover:scale-105 inline-block">
+              <a href="/contact" className="bg-[#f0b429] text-black font-[var(--font-display)] text-xl px-7 py-3 rounded tracking-wider hover:bg-[#ffd166] transition-all hover:scale-105 inline-block">
                 GET A FREE QUOTE
-              </Link>
+              </a>
               <a href={SITE.phoneTel} className="border-2 border-[#f0b429] text-[#f0b429] font-[var(--font-display)] text-xl px-7 py-3 rounded tracking-wider hover:bg-[#f0b429] hover:text-black transition-all flex items-center gap-2">
                 <Phone size={18} /> CALL {SITE.phone}
               </a>
@@ -130,11 +117,11 @@ function Home() {
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {SERVICES.map(s => (
-              <Link key={s.slug} to="/services" className="bg-[#0d0d0d] border-l-4 border-[#f0b429] p-6 rounded hover:shadow-[0_0_24px_rgba(240,180,41,0.25)] transition-all hover:scale-[1.02] block">
+              <a key={s.slug} href="/services" className="bg-[#0d0d0d] border-l-4 border-[#f0b429] p-6 rounded hover:shadow-[0_0_24px_rgba(240,180,41,0.25)] transition-all hover:scale-[1.02] block">
                 <h3 className="font-[var(--font-display)] text-2xl text-white tracking-wider mb-3">{s.name}</h3>
                 <p className="text-sm text-[#e8e4d8]/80 mb-4">{s.desc}</p>
                 <span className="text-[#f0b429] font-[var(--font-heading)] uppercase tracking-wider text-sm">Book This Service →</span>
-              </Link>
+              </a>
             ))}
           </div>
         </div>
@@ -162,7 +149,7 @@ function Home() {
             <img src={gallery3} alt="Construction debris haul" className="w-full aspect-square object-cover rounded-lg border-2 border-[#f0b429]/30" />
           </div>
           <div className="text-center mt-8">
-            <Link to="/gallery" className="text-[#f0b429] font-[var(--font-heading)] uppercase tracking-widest hover:text-[#ffd166]">View Full Gallery →</Link>
+            <a href="/gallery" className="text-[#f0b429] font-[var(--font-heading)] uppercase tracking-widest hover:text-[#ffd166]">View Full Gallery →</a>
           </div>
         </div>
       </section>

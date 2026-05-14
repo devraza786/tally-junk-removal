@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect, useCallback } from "react";
 import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -21,26 +20,15 @@ import g16 from "@/assets/gallery-16.jpg";
 import g17 from "@/assets/gallery-17.jpg";
 import { SITE } from "@/lib/site";
 
-export const Route = createFileRoute("/gallery")({
-  component: Gallery,
-  head: () => ({
-    meta: [
-      { title: "Gallery — Tally Junk Removal | Before & After Hauls" },
-      { name: "description", content: "Real before-and-after photos of junk removal jobs in Tallahassee, FL by Tally Junk Removal." },
-    ],
-  }),
-});
-
 const PHOTOS = [g10, g11, g12, g13, g14, g15, g16, g17, g1, g2, g3, g4, g5, g6, g7, g8, g9];
 
-function Gallery() {
+export default function Gallery() {
   const [index, setIndex] = useState<number | null>(null);
 
   const close = useCallback(() => setIndex(null), []);
   const prev = useCallback(() => setIndex(i => (i === null ? null : (i - 1 + PHOTOS.length) % PHOTOS.length)), []);
   const next = useCallback(() => setIndex(i => (i === null ? null : (i + 1) % PHOTOS.length)), []);
 
-  // Warm the browser cache so the lightbox opens instantly
   useEffect(() => {
     const imgs = PHOTOS.map(src => {
       const img = new Image();
@@ -51,7 +39,6 @@ function Gallery() {
     return () => { imgs.length = 0; };
   }, []);
 
-  // Aggressively prefetch neighbors of the current index
   useEffect(() => {
     if (index === null) return;
     [-1, 1, 2].forEach(o => {
@@ -117,7 +104,6 @@ function Gallery() {
             transition={{ duration: 0.25 }}
             onClick={close}
           >
-            {/* Top bar */}
             <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-6 py-4 text-[#f0b429] font-[var(--font-heading)] uppercase tracking-widest text-sm">
               <span>{index + 1} / {PHOTOS.length}</span>
               <button onClick={(e) => { e.stopPropagation(); close(); }} aria-label="Close" className="hover:text-[#ffd166] p-2">
@@ -125,7 +111,6 @@ function Gallery() {
               </button>
             </div>
 
-            {/* Prev */}
             <button
               onClick={(e) => { e.stopPropagation(); prev(); }}
               aria-label="Previous"
@@ -149,7 +134,6 @@ function Gallery() {
               />
             </AnimatePresence>
 
-            {/* Next */}
             <button
               onClick={(e) => { e.stopPropagation(); next(); }}
               aria-label="Next"
@@ -159,7 +143,6 @@ function Gallery() {
               <ChevronRight size={28} />
             </button>
 
-            {/* Thumbnail strip */}
             <div className="absolute bottom-3 left-0 right-0 flex justify-center px-4">
               <div className="flex gap-2 overflow-x-auto no-scrollbar max-w-full bg-black/60 border border-[#f0b429]/30 rounded p-2">
                 {PHOTOS.map((p, i) => (

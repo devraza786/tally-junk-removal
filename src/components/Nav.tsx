@@ -1,4 +1,4 @@
-import { Link, useLocation } from "@tanstack/react-router";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Menu, X, Phone } from "lucide-react";
 import logo from "@/assets/tally-logo.png";
@@ -15,7 +15,8 @@ const links = [
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const loc = useLocation();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -24,25 +25,33 @@ export function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => { setOpen(false); }, [loc.pathname]);
+  useEffect(() => { setOpen(false); }, [location.pathname]);
+
+  const isActive = (path: string) => {
+    if (path === "/") return location.pathname === "/";
+    return location.pathname.startsWith(path);
+  };
 
   return (
     <header className={`fixed top-0 inset-x-0 z-50 transition-all ${scrolled ? "bg-[#0d0d0d]/95 backdrop-blur border-b-2 border-[#f0b429]" : "bg-transparent"}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 sm:gap-3">
+        <button onClick={() => navigate("/")} className="flex items-center gap-2 sm:gap-3 cursor-pointer bg-none border-none p-0">
           <img src={logo} alt="Tally" className="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
           <span className="font-[var(--font-display)] text-lg sm:text-xl text-[#f0b429] tracking-wider hidden xs:inline">
             TALLY JUNK REMOVAL
           </span>
-        </Link>
+        </button>
         <nav className="hidden lg:flex items-center gap-8">
           {links.map(l => (
-            <Link key={l.to} to={l.to}
-              className="font-[var(--font-heading)] uppercase text-sm tracking-widest text-white/80 hover:text-[#f0b429] transition-colors relative"
-              activeProps={{ className: "text-[#f0b429]" }}
-              activeOptions={{ exact: l.to === "/" }}>
+            <button
+              key={l.to}
+              onClick={() => navigate(l.to)}
+              className={`font-[var(--font-heading)] uppercase text-sm tracking-widest transition-colors relative cursor-pointer bg-none border-none p-0 ${
+                isActive(l.to) ? "text-[#f0b429]" : "text-white/80 hover:text-[#f0b429]"
+              }`}
+            >
               {l.label}
-            </Link>
+            </button>
           ))}
           <a href={SITE.phoneTel}
             className="bg-[#f0b429] text-black font-[var(--font-display)] text-lg px-5 py-2 rounded tracking-wider hover:bg-[#ffd166] transition-colors flex items-center gap-2">
@@ -61,12 +70,15 @@ export function Nav() {
           </div>
           <nav className="flex-1 flex flex-col items-center justify-center gap-6">
             {links.map(l => (
-              <Link key={l.to} to={l.to}
-                className="font-[var(--font-display)] text-4xl text-white hover:text-[#f0b429] tracking-wider"
-                activeProps={{ className: "text-[#f0b429]" }}
-                activeOptions={{ exact: l.to === "/" }}>
+              <button
+                key={l.to}
+                onClick={() => navigate(l.to)}
+                className={`font-[var(--font-display)] text-4xl tracking-wider cursor-pointer bg-none border-none p-0 ${
+                  isActive(l.to) ? "text-[#f0b429]" : "text-white hover:text-[#f0b429]"
+                }`}
+              >
                 {l.label}
-              </Link>
+              </button>
             ))}
             <a href={SITE.phoneTel} className="mt-6 bg-[#f0b429] text-black font-[var(--font-display)] text-2xl px-8 py-3 rounded tracking-wider">
               {SITE.phone}

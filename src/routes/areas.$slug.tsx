@@ -1,24 +1,22 @@
-import { createFileRoute, notFound, Link } from "@tanstack/react-router";
+import { useParams } from "react-router-dom";
 import { AREAS, SERVICES, SITE } from "@/lib/site";
 
-export const Route = createFileRoute("/areas/$slug")({
-  component: AreaPage,
-  loader: ({ params }) => {
-    const area = AREAS.find(a => a.slug === params.slug);
-    if (!area) throw notFound();
-    return { area };
-  },
-  head: ({ loaderData }) => ({
-    meta: [
-      { title: `Junk Removal in ${loaderData?.area.name}, FL — Tally Junk Removal` },
-      { name: "description", content: `Same-day junk removal in ${loaderData?.area.name}, FL. Furniture, appliances, yard debris, construction. Call 850-966-1371.` },
-    ],
-  }),
-  notFoundComponent: () => <div className="py-20 text-center text-white">Area not found.</div>,
-});
+export function AreasComponent() {
+  const { slug } = useParams<{ slug: string }>();
+  const area = AREAS.find(a => a.slug === slug);
 
-function AreaPage() {
-  const { area } = Route.useLoaderData();
+  if (!area) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black honeycomb-bg px-4">
+        <div className="text-center">
+          <h1 className="font-[var(--font-display)] text-8xl text-[#f0b429] tracking-wider">404</h1>
+          <p className="text-white/80 mt-2">Area not found.</p>
+          <a href="/" className="inline-block mt-6 bg-[#f0b429] text-black px-6 py-3 font-[var(--font-display)] tracking-wider">GO HOME</a>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <section className="py-20 px-4 honeycomb-bg bg-black text-center">
@@ -50,7 +48,7 @@ function AreaPage() {
       </section>
       <section className="py-12 px-4 text-center">
         <h2 className="font-[var(--font-display)] text-4xl text-white tracking-wider mb-4">Ready to Haul It?</h2>
-        <Link to="/contact" className="inline-block bg-[#f0b429] text-black font-[var(--font-display)] text-2xl px-8 py-3 tracking-wider">GET A FREE QUOTE</Link>
+        <a href="/contact" className="inline-block bg-[#f0b429] text-black font-[var(--font-display)] text-2xl px-8 py-3 tracking-wider">GET A FREE QUOTE</a>
         <div className="mt-8 max-w-3xl mx-auto aspect-video rounded overflow-hidden border-2 border-[#f0b429]/40">
           <iframe title={`${area.name} map`} src={`https://www.google.com/maps?q=${encodeURIComponent(area.name + ", Tallahassee, FL")}&output=embed`} className="w-full h-full" loading="lazy" />
         </div>
